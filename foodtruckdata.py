@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
 
 """
-this is a food truck project that will let the user know where a food truck 
-is in san francisco on a specific day. 
+this is a food truck project that will recommend a food truck to a user 
+based on their preferences. 
 
 we need to filter food truck by day, cuisine, and truck name. 
 """
@@ -15,18 +15,19 @@ from foodtruckuser import *
 FOODTRUCK_ENDPOINT = "https://data.sfgov.org/resource/6a9r-agq8.json"
 
 
-
 def call_sfdataapi(endpoint):
 	"""import data from sf open data"""
 
 	response = urlopen(endpoint)
 	return response
 
+
 def load_sfdata(response):
 	""" load data """
 
 	json_obj = load(response)
 	return json_obj
+
 
 def clean_data(json_obj):
 	""" parsing data in json_obj and returns a dictionary of cleaned up data """
@@ -52,50 +53,59 @@ def clean_data(json_obj):
 	# print clean_data
 	return clean_data 
 
+
+response = call_sfdataapi(FOODTRUCK_ENDPOINT)
+foodtruck_list = load_sfdata(response)
+cleaned_data = clean_data(foodtruck_list)
+
+
 def search_by_day(cleaned_data, username, user_day_pref):
 	""" loop through data and searches by day """
+	day_list = []
+	cleaned_data = clean_data(foodtruck_list)
 	truck_days = None
 	
 	while truck_days == None: 
 		if user_day_pref == 1:
-			truck_days = ['mo-su', 'mo-fri', 'm', 'm/', 'mo-sat']
+			truck_days = ['monday', 'mo-su', 'mo-fri', 'm', 'm/', 'mo-sat']
 		elif user_day_pref == 2:
-			truck_days = ['mo-su', 'mo-fri', 'tu', 'mo-sat']
+			truck_days = ['tuesday', 'mo-su', 'mo-fri', 'tu', 'mo-sat']
 		elif user_day_pref == 3:
-			truck_days = ['mo-su', 'mo-fri', 'w', 'mo-sat']
+			truck_days = ['wednesday', 'mo-su', 'mo-fri', 'w', 'mo-sat']
 		elif user_day_pref == 4:
-			truck_days = ['mo-su', 'mo-fri', 'th', 'mo-sat']
+			truck_days = ['thursday', 'mo-su', 'mo-fri', 'th', 'mo-sat']
 		elif user_day_pref == 5:
-			truck_days = ['mo-su', 'mo-fri', 'f', 'mo-sat']
+			truck_days = ['friday', 'mo-su', 'mo-fri', 'f', 'mo-sat']
 		elif user_day_pref == 6:
-			truck_days = ['mo-su', 'sat', 'mo-sat']
+			truck_days = ['saturday', 'mo-su', 'sat', 'mo-sat']
 		elif user_day_pref == 7:
-			truck_days = ['mo-su','sun']
+			truck_days = ['sunday', 'mo-su','sun']
 		else:
 			print "That's not a valid choice. Try again."
 			user_day_pref = int(raw_input("Select your choice between 1-7. "))
 
-
-	display_recommendations(username)
 	# this iterates over every single truck in cleaned data 
 	for truck, info in cleaned_data.items():
 		# this iterates over every day in truck days 
 		for day in truck_days:
 			if info[1] and day in info[1]:
-				print truck, "is at ", info[2], "\n"
+				# print truck, "is at ", info[2], "\n"
+
+				day_list.append((truck, info[2]))
+	print day_list
+	return day_list
 
 
 response = call_sfdataapi(FOODTRUCK_ENDPOINT)
 foodtruck_list = load_sfdata(response)
 cleaned_data = clean_data(foodtruck_list)
 		
+
 def search_by_cuisine(cleaned_data, user_food_pref, username):
 	""" loop through data and searches by cuisine """
-	# print type(cleaned_data)
+
 	cuisine_list = []
 	cleaned_data = clean_data(foodtruck_list)
-
-	# display_recommendations(username)
 
 	for truck,info in cleaned_data.items():
 		if info[0] and user_food_pref in info[0]:			
@@ -105,14 +115,25 @@ def search_by_cuisine(cleaned_data, user_food_pref, username):
 	print cuisine_list
 	return cuisine_list
 
+
+response = call_sfdataapi(FOODTRUCK_ENDPOINT)
+foodtruck_list = load_sfdata(response)
+cleaned_data = clean_data(foodtruck_list)
+
+
 def search_by_truck(cleaned_data, username, user_truck_pref):
 
-	display_recommendations(username)
+	truck_list = []
+	cleaned_data = clean_data(foodtruck_list)
 	
 	for truck,info in cleaned_data.items():
-		if info[2] and user_truck_pref in truck: 	
-			print truck, "is at", info[2], "\n"
-			
+		if info and user_truck_pref in info: 	
+		# print truck, "is at", info[2], "\n"
+		
+			truck_list.append((truck, info[2]))
+	print truck_list
+	return truck_list
+
 
 def main():
 	# this is loading data
@@ -121,7 +142,6 @@ def main():
 	cleaned_data = clean_data(foodtruck_list)
 
 	# this is where we prompt user for preferences
-	
 	username = prompt_user_for_username()
 
 	while(True):
