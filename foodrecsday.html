@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SF Food Truck Finder</title>
+  <link rel="stylesheet" href="./static/style.css">
+
+<style>
+div.transbox {
+  margin: 30px;
+  background-color: #ffffff;
+  border: 1px solid black;
+  opacity: 0.8;
+  filter: alpha(opacity=80); 
+}
+
+div.transbox p {
+  margin: 5%;
+  font-weight: bold;
+  color: #000000;
+  font-family: sans-serif;
+  font-size: 12px;
+  margin: auto;
+  width: 60%;
+}
+</style>
+
+</head>
+<body>
+  <div class="transbox">
+    San Francisco Food Truck Finder!
+    <p>
+    <a href="/foodtype">Search by Food Type</a> | 
+    <a href="/days">Search by Day</a> | 
+    <a href="/truckname">Search by Truck Name</a>
+    
+    <br>
+    <br>
+    Hey, there!
+  	<br>
+    <br>
+  	Here are my recommendations:
+    <br>
+  	{% for pair in search_by_day: %}
+    <br>
+  	{{ pair[0] }} is at {{ pair[1] }}
+  	<br>
+  	{% endfor %}
+
+    </p>
+  </div>
+
+
+</body>
+</html>
