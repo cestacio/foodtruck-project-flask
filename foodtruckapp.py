@@ -2,42 +2,78 @@ from flask import Flask, request, render_template
 from foodtruckdata import *
 
 
-
 app = Flask(__name__)
 # the app is an instance of Flask
+
 
 response = call_sfdataapi(FOODTRUCK_ENDPOINT)
 foodtruck_list = load_sfdata(response)
 cleaned_data = clean_data(foodtruck_list)
-print type(cleaned_data)
+# print type(cleaned_data)
+
 
 @app.route('/form')
 def say_hello():
-    """Show hello.html template."""
+    """Show hello.html template. This is the welcome page. """
     return render_template('hello.html')
 
-# COMPLIMENTS = ["awesome", "clever", "wonderful", "fierce", "strong"]
 
-# @app.route('/greet')
-# def greet_person():
-#     """Return customized compliment along with person name."""
+@app.route('/truckname')
+def foodname():
+	"""Show truckname.html template."""
+	return render_template('truckname.html')
 
-#     player = request.args.get("person")
-#     nice_thing = choice(COMPLIMENTS)
-#     return render_template('compliments.html',
-#                            name=player,
-#                            compliment=nice_thing)
+
+@app.route('/foodtype')
+def foodtype():
+    """Show foodtype.html template."""
+    return render_template('foodtype.html')
+
+
+@app.route('/days')
+def days():
+    """Show hello.html template."""
+    return render_template('days.html')
 
 
 @app.route('/foodrecs')
-def foodrecs():
-	player = "charmaine" #request.args.get("person")
-	user_food_pref = "tacos" #request.args.get("food")
+def foodrecs_foodtype():
+	"""Show food truck recommendations based on food type."""
+	player = request.args.get("person")
+	user_food_pref = request.args.get("food")
 	cleaned_data = clean_data(foodtruck_list)
 	cuisine_list = search_by_cuisine(player, user_food_pref, cleaned_data)
+
 	# print cuisine_list
 	return render_template('foodrecs.html', 
-							search_by_cuisine=str(cuisine_list), 
+							search_by_cuisine=cuisine_list, 
+							name=player)
+
+
+@app.route('/foodrecsday')
+def foodrecs_days():
+	"""Show food truck recommendations based on day"""
+	player = request.args.get("person")
+	user_day_pref = int(request.args.get("day"))
+	cleaned_data = clean_data(foodtruck_list)
+	day_list = search_by_day(player, user_day_pref, cleaned_data)
+
+	return render_template('foodrecsday.html', 
+							search_by_day=day_list, 
+							name=player)
+
+
+@app.route('/foodrecsname')
+def foodrecs_name():
+	"""Show food truck recommendations based on truck name"""
+	player = request.args.get("person")
+	user_truck_pref = request.args.get("truck")
+	cleaned_data = clean_data(foodtruck_list)
+	truck_list = search_by_truck(player, user_truck_pref, cleaned_data)
+
+	print truck_list
+	return render_template('foodrecsname.html', 
+							search_by_truck=truck_list, 
 							name=player)
 
 
