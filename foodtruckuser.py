@@ -11,17 +11,21 @@ day_choices = """
 		7 for Sunday
 		"""	
 
+
 def prompt_user_for_username():
 	username = raw_input("Welcome to SF Food Truck Finder! What is your name? ")
 	return username
+
 
 def prompt_user_for_cuisine():
 	user_food_pref = str(raw_input("What do you want to eat? "))
 	return user_food_pref	
 
+
 def prompt_user_for_truckname():
 	user_truck_pref = str(raw_input("Where do you want to eat?"))
 	return user_truck_pref
+
 
 def display_menu():
 	print """
@@ -31,15 +35,17 @@ def display_menu():
 		B = Search By Day
 		C = Search By Truck Name
 		X = exit SF Food Truck Finder
-
 	"""
+
 
 def prompt_user_menu_choice():
 	user_menu_choice = raw_input("Please select from above: ").upper()
 	return user_menu_choice
 
+
 def display_recommendations(username):
 	print "Hey, " + username + "! " + "Here are my recommendations: "
+
 
 def main():
 	# this is just for testing
