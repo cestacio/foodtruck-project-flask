@@ -1,22 +1,20 @@
-html {
-  background: url("/static/foodtruck.jpg") no-repeat center fixed; 
-  background-size: cover;
-  background: rgba(0, 0, 0, 0.5);
-  overflow: scroll;
-}
+
 body { 
-  color: rgb(66, 191, 244); 
-  font-size: 12px;
+  color: black; 
+  font-size: 14px;
   font-family: sans-serif;
   text-align: center;
   padding-left: 10%;
   margin: auto;
   width: 50%;
+  background: url("/static/foodtruck.jpg") no-repeat center fixed; 
+  background-size: cover;
+  overflow: scroll;
 }
 
 h1 {
-  color: rgb(66, 191, 244); 
-  font-size: 16px;
+  color: black; 
+  font-size: 18px;
   font-family: sans-serif;
   margin: auto;
   width: 50%;
