@@ -42,7 +42,7 @@ def foodrecs_foodtype():
 	player = request.args.get("person")
 	user_food_pref = request.args.get("food")
 	cleaned_data = clean_data(foodtruck_list)
-	cuisine_list = search_by_cuisine(player, user_food_pref, cleaned_data)
+	cuisine_list = search_by_cuisine(cleaned_data, user_food_pref, player)
 
 	# print cuisine_list
 	return render_template('foodrecs.html', 
@@ -56,7 +56,7 @@ def foodrecs_days():
 	player = request.args.get("person")
 	user_day_pref = int(request.args.get("day"))
 	cleaned_data = clean_data(foodtruck_list)
-	day_list = search_by_day(player, user_day_pref, cleaned_data)
+	day_list = search_by_day(cleaned_data, player, user_day_pref)
 
 	return render_template('foodrecsday.html', 
 							search_by_day=day_list, 
@@ -69,9 +69,9 @@ def foodrecs_name():
 	player = request.args.get("person")
 	user_truck_pref = request.args.get("truck")
 	cleaned_data = clean_data(foodtruck_list)
-	truck_list = search_by_truck(player, user_truck_pref, cleaned_data)
+	truck_list = search_by_truck(cleaned_data, player, user_truck_pref)
 
-	print truck_list
+	# print truck_list
 	return render_template('foodrecsname.html', 
 							search_by_truck=truck_list, 
 							name=player)
