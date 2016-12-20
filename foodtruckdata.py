@@ -125,9 +125,9 @@ def search_by_truck(cleaned_data, username, user_truck_pref):
 
 	truck_list = []
 	cleaned_data = clean_data(foodtruck_list)
-	
+	print type(user_truck_pref)
 	for truck,info in cleaned_data.items():
-		if info and user_truck_pref in info: 	
+		if info and (user_truck_pref in truck): 	
 		# print truck, "is at", info[2], "\n"
 		
 			truck_list.append((truck, info[2]))
